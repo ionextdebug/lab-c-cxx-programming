@@ -16,7 +16,6 @@ int main()
     for (int i = 0; i < 10; i++)
     {
         jthreads.push_back(std::jthread(lambda, i));
-        jthreads[i].join();
     }
 
     std::cout << "Hello from the main thread." << std::endl;
