@@ -4,14 +4,18 @@
 #include <mutex>
 
 std::mutex gLock;
-
 static int shared_value = 0;
 
 void shared_value_increment()
 {
-    gLock.lock();
-    shared_value = shared_value + 1;
-    gLock.unlock();
+    std::lock_guard<std::mutex> lockGuard(gLock);
+
+    try{
+        shared_value = shared_value + 1;
+        throw "dangerous abort";
+    }catch(...){
+        std::cout << "handle exception" << std::endl;
+    }
 }
 
 int main()
