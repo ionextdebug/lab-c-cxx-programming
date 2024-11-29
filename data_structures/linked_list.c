@@ -19,6 +19,14 @@ node_t set_node(int value, node_t *next)
     return node;
 }
 
+node_t *create_new_node(int value)
+{
+    node_t *node = malloc(sizeof(node_t));
+    node->value = value;
+    node->next = NULL;
+    return node;
+}
+
 void print_list(node_t *root)
 {
 
@@ -31,15 +39,50 @@ void print_list(node_t *root)
     }
 }
 
+node_t *insert_at_head(node_t **head, node_t *node_to_insert)
+{
+    node_to_insert->next = *head;
+    *head = node_to_insert;
+    return node_to_insert;
+}
+
+node_t *find_the_node(node_t *head, int value)
+{
+    node_t *tmp = head;
+    while (tmp != NULL)
+    {
+        if (tmp->value == value)
+        {
+            return tmp;
+        }
+        tmp = tmp->next;
+    }
+    return NULL;
+}
+
+void insert_after_node(node_t *node_to_insert_after, node_t *new_node)
+{
+    new_node->next = node_to_insert_after->next;
+    node_to_insert_after->next = new_node;
+}
+
 int main()
 {
-    node_t root, n1, n2, n3;
+    node_t *head = NULL;
+    node_t *tmp;
 
-    root = set_node(0, &n1);
-    n1 = set_node(1, &n2);
-    n2 = set_node(2, &n3);
-    n3 = set_node(3, NULL);
+    for (int i = 0; i < 25; i++)
+    {
+        tmp = create_new_node(i);
+        head = insert_at_head(&head, tmp);
+    }
 
-    print_list(&root);
+    tmp = find_the_node(head, 13);
+    printf("Found the node with value: %d\n.", tmp->value);
 
+    insert_after_node(tmp, create_new_node(100));
+
+    print_list(head);
+
+    return 0;
 }
