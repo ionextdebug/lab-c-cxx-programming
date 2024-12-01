@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 typedef struct treenode
 {
@@ -57,24 +58,53 @@ void print_tree(treenode *root)
     print_tree_rec(root, 0);
 }
 
+bool insert_number(treenode **rootptr, int value)
+{
+    treenode *root = *rootptr;
+
+    if (root == NULL)
+    {
+        (*rootptr) = create_node(value);
+        return true;
+    }
+
+    if (value == root->value)
+    {
+        return false;
+    }
+
+    if (value < root->value)
+    {
+        return insert_number(&(root->left), value);
+    }
+    else
+    {
+        return insert_number(&(root->right), value);
+    }
+}
+
+bool find_number(treenode *root, int value)
+{
+    if (root == NULL)
+        return false;
+    if (root->value == value)
+        return true;
+    if (value < root->value)
+        return find_number(root->left, value);
+
+    return find_number(root->right, value);
+}
+
 int main()
 {
-    treenode *n1 = create_node(10);
-    treenode *n2 = create_node(20);
-    treenode *n3 = create_node(30);
-    treenode *n4 = create_node(40);
-    treenode *n5 = create_node(50);
+    treenode *root = NULL;
 
-    n1->left = n2;
-    n1->right = n3;
-    n3->left = n4;
-    n3->right = n5;
+    insert_number(&root, 15);
+    insert_number(&root, 16);
+    insert_number(&root, 17);
+    insert_number(&root, 18);
+    insert_number(&root, 19);
+    insert_number(&root, 20);
 
-    print_tree(n1);
-
-    free(n1);
-    free(n2);
-    free(n3);
-    free(n4);
-    free(n5);
+    print_tree(root);
 }
