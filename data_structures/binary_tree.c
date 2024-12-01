@@ -106,5 +106,5 @@ int main()
     insert_number(&root, 19);
     insert_number(&root, 20);
 
-    print_tree(root);
+    printf("%d\n", find_number(root, 16));
 }
